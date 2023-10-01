@@ -33,27 +33,27 @@ const  MainLayout=()=>{
                         <div className="divider"></div> 
                         {/* <Link to="/allTasks"><li className="text-xl py-1"><a><span className="text-blue-500"><BsListTask/></span>All Tasks</a></li></Link> */}
                         <NavLink
-                         to="/"
+                         to="/tasks/"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
                            : ''
                         }
-                         ><li className="text-xl py-1 flex"><a><BsListTask className="text-blue-500 px-1 pt-1"/>All Tasks</a></li>
+                         ><li className="text-xl py-1 flex"><a><BsListTask className="text-blue-500 px-1 pt-1 text-3xl"/>All Tasks</a></li>
                          </NavLink>
                          <NavLink
-                         to="/today"
+                         to="today"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
                            : ''
                         }
-                         ><li className="text-xl py-1 flex"><a><SlCalender className="text-blue-500 px-1 pt-1"/>Today</a></li>  
+                         ><li className="text-xl py-1 flex"><a><SlCalender className="text-blue-500 px-1 pt-1 text-3xl"/>Today</a></li>  
                          </NavLink>
                         <div className="divider"></div>
 
                         <NavLink
-                         to="/highPriority"
+                         to="highPriority"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
@@ -63,7 +63,7 @@ const  MainLayout=()=>{
                         <li className="text-xl py-1 text-red-600"><a><span className="text-red-600"><BsListTask/></span>High Priority</a></li>
                         </NavLink>  
                         <NavLink
-                         to="/medium-priority"
+                         to="medium-priority"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
@@ -73,7 +73,7 @@ const  MainLayout=()=>{
                         <li className="text-xl py-1 text-yellow-500"><a><span className="text-yellow-500"><SlCalender/></span>Medium Priority</a></li>
                         </NavLink> 
                         <NavLink
-                         to="/low-priority"
+                         to="low-priority"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
@@ -84,7 +84,7 @@ const  MainLayout=()=>{
                         </NavLink>                                             
     
                         <div className="divider"></div>
-                        <Link to="/"><li className="text-xl py-1 text-green-500"><a><span><AiOutlineHome/></span>Home</a></li></Link>
+                        <Link to="/tasks/"><li className="text-xl py-1 text-green-500"><a><span><AiOutlineHome/></span>Home</a></li></Link>
                          
                         <li className="text-xl py-1 text-blue-600"><a><span><FaComputer/></span>Work</a></li>
                         <li className="text-xl py-1 text-yellow-400"><a><span><GiTakeMyMoney/></span>Finance</a></li>
