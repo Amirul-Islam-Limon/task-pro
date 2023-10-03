@@ -3,12 +3,33 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { useForm, useWatch } from "react-hook-form"
+import { useEffect, useState } from 'react';
 
 const SignUp=()=>{
-    const {register, handleSubmit, watch, control, formState: { errors },} = useForm()
-    // const password = useWatch({ control, name: 'password' });
-    const onSubmit = (data) => console.log(data);
-    console.log(watch("example"))
+    const {register, handleSubmit, control, formState: { errors },} = useForm()
+    const password = useWatch({ control, name: 'password' });
+    const confirmPassword = useWatch({control, name: "confirmPassword"});
+    const [disableSignUp, setDisableSighUp] = useState(true);
+
+    const onSubmit = (data) => {
+        console.log(data)
+    };
+
+    useEffect(()=>{
+        if(
+            password !== undefined &&
+            password !== "" && 
+            confirmPassword !== undefined &&
+            confirmPassword !== "" &&
+            password === confirmPassword
+            ){
+                setDisableSighUp(false)
+            }
+            else{
+                setDisableSighUp(true);
+            }
+    },[password, confirmPassword])
+    
     return(
         <div className='bg-gray-100'>
             <div className="md:w-2/5 flex justify-center items-center h-screen mx-auto">
@@ -51,18 +72,17 @@ const SignUp=()=>{
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="password" placeholder="type your password" {...register("password", { required:true, pattern: /^[A-Za-z]+$/i })} className="input input-bordered"/>
+                            <input type="password" placeholder="type your password" {...register("password", { required:true, pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/i })} className="input input-bordered"/>
                             {errors.password && <span className='text-red-500'>password must be atleast 6 character with one number and one special character</span>}
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Confirm Password</span>
                             </label>
-                            <input type="password" placeholder="password(confirm)" {...register("confirmPassword")} className="input input-bordered"/>
+                            <input type="password" placeholder="password(confirm)" {...register("confirmPassword", { required: true })} className="input input-bordered"/>
+                            {errors.confirmPassword && <span className='text-red-500'>This field is required</span>}
                         </div>
-                        
-
-                        <input className='w-full bg-red-600 mt-7 text-white rounded py-3 font-semibold cursor-pointer btn hover:bg-red-600' type="submit" value="Sign up with email" />
+                        <button disabled={disableSignUp} className='btn disabled:cursor-not-allowed w-full bg-red-600 mt-7 text-white rounded py-3 font-semibold hover:bg-red-600' type="submit" value="Sign up with email">Sign up with email</button>
                     </form>
                     <div className="divider pt-3"></div>
                     <div className='flex justify-center font-semibold'>
