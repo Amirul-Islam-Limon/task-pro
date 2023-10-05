@@ -1,7 +1,17 @@
+import { signOut } from 'firebase/auth';
 import { FaTasks } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logOut } from '../redux/features/user/userSlice';
+import auth from '../firebase/firebase.config';
 
 const Navbar=()=>{
+    const dispatch = useDispatch();
+
+    const handleSignOut=()=>{
+        dispatch(logOut());
+        signOut(auth)
+    }
     return(
         <div className="navbar bg-red-600 px-16">
             <div className="flex-1">
@@ -25,7 +35,7 @@ const Navbar=()=>{
                     </a>
                     </li>
                     <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+                    <li onClick={handleSignOut}><a>Logout</a></li>
                 </ul>
                 </div>
             </div>

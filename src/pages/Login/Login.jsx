@@ -3,11 +3,13 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { useForm} from "react-hook-form"
+import { useSelector } from 'react-redux';
 
 
 const Login=()=>{
     const {register, handleSubmit, formState: { errors },} = useForm()
-
+    const ourState = useSelector(state=> state.userSlice)
+    console.log(ourState);
     const onSubmit = (data) => {
         console.log(data)
     };

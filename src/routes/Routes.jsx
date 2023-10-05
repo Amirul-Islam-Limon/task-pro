@@ -8,6 +8,7 @@ import LowPriorityTask from "../pages/LowPriorityTask/LowPriorityTask";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
+import PrivateRoutes from "./PrivateRoutes";
 
 const routes = createBrowserRouter([
     {
@@ -20,7 +21,9 @@ const routes = createBrowserRouter([
     },
     {
         path:"/tasks",
-        element:<MainLayout></MainLayout>,
+        element:(
+            <PrivateRoutes><MainLayout></MainLayout></PrivateRoutes>
+        ),
         children:[
             {
                 
