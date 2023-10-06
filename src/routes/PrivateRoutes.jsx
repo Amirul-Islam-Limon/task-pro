@@ -1,13 +1,14 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import auth from "../firebase/firebase.config";
 import { setUser, toggleLoading } from "../redux/features/user/userSlice";
 
 const PrivateRoutes=({children})=>{
     const userInfo = useSelector(state=> state.userSlice);
     const dispatch = useDispatch();
+    const location = useLocation();
 
     console.log("userInfo from Private Route", userInfo);
 
@@ -28,7 +29,12 @@ const PrivateRoutes=({children})=>{
         return <div>Loading</div>
     }
     if(!userInfo.email && !userInfo.isLoading){
-        return <Navigate to="/login"></Navigate>
+        // return <Navigate to="/login"></Navigate>
+        try {
+            return <Navigate to="/login" state={{ from: location }} replace />
+        } catch (error) {
+            console.log(error);
+        }
     }
     
     if(userInfo.email){

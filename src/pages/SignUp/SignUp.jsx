@@ -26,7 +26,7 @@ const SignUp=()=>{
 
     useEffect(()=>{
         if(!userInfo.isLoading && userInfo.email){
-            navigate("/");
+            navigate("/tasks");
         }
     },[userInfo.email, userInfo.isLoading])
 

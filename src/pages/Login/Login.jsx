@@ -1,18 +1,36 @@
 import { FaTasks } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm} from "react-hook-form"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginWithEmailPass } from '../../redux/features/user/userSlice';
+import { useEffect } from 'react';
 
 
 const Login=()=>{
-    const {register, handleSubmit, formState: { errors },} = useForm()
-    const ourState = useSelector(state=> state.userSlice)
-    console.log(ourState);
+    const {register, handleSubmit, formState: { errors },} = useForm();
+    const dispatch = useDispatch();
+    const {email, isLoading} = useSelector(state=> state.userSlice);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || "/";
+
     const onSubmit = (data) => {
-        console.log(data)
+        console.log("data from login page", data);
+        dispatch(loginWithEmailPass({email:data.email, password:data.password}))
     };
+
+    useEffect(()=>{
+        if(!isLoading && email){
+            try {
+                navigate(from, { replace: true });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    },[email,isLoading])
 
     return(
         <div className='bg-gray-100'>
