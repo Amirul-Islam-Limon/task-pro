@@ -15,7 +15,7 @@ const Navbar=()=>{
     return(
         <div className="navbar bg-red-600 px-16">
             <div className="flex-1">
-                <Link className='flex' to="/tasks/">
+                <Link className='flex' to="/">
                     <span className='text-white text-3xl pr-2 pt-1'><FaTasks /></span>
                     <span className="normal-case text-3xl text-white">Task Pro</span>
                 </Link>

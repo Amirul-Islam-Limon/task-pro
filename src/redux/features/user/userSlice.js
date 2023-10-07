@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import auth from "../../../firebase/firebase.config";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 
 
 const initialState = {
@@ -27,6 +27,17 @@ export const createUser = createAsyncThunk("userSlice/createUser", async({email,
 
 export const loginWithEmailPass = createAsyncThunk("userSlice/loginWithEmailPass", async({email, password})=>{
     const data = await signInWithEmailAndPassword(auth, email, password);
+    console.log(data);
+    return{
+        name:data.user.displayName,
+        email:data.user.email
+    }
+})
+
+
+export const googleLogin = createAsyncThunk("userSlice/GoogleLogin", async()=>{
+    const googleProvider = new GoogleAuthProvider();
+    const data = await signInWithPopup(auth, googleProvider);
     console.log(data);
     return{
         name:data.user.displayName,
@@ -97,6 +108,29 @@ const userSlice = createSlice({
             state.error= action.error.message
         })
 
+        // login with Google
+
+        builder.addCase(googleLogin.pending, (state, action)=>{
+            state.displayName= "",
+            state.email= "",
+            state.isLoading= true,
+            state.isError= false,
+            state.error= ""
+        })
+        builder.addCase(googleLogin.fulfilled, (state, action)=>{
+            state.displayName= action.payload.name,
+            state.email= action.payload.email,
+            state.isLoading= false,
+            state.isError= false,
+            state.error= ""
+        })
+        builder.addCase(googleLogin.rejected, (state, action)=>{
+            state.displayName= "",
+            state.email= "",
+            state.isLoading= false,
+            state.isError= true,
+            state.error= action.error.message
+        })
         
     }
 })

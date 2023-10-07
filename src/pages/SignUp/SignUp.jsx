@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useForm, useWatch } from "react-hook-form"
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../../redux/features/user/userSlice';
+import { createUser, googleLogin } from '../../redux/features/user/userSlice';
 
 const SignUp=()=>{
     const {register, handleSubmit, control, formState: { errors },} = useForm()
@@ -22,6 +22,11 @@ const SignUp=()=>{
         dispatch(createUser({email:data.email, password:data.password, name:data.name}));
         console.log(data)
     };
+
+    const handleGoogleLogin=()=>{
+        console.log("Clicked Google Login");
+        dispatch(googleLogin());
+    }
 
 
     useEffect(()=>{
@@ -59,7 +64,7 @@ const SignUp=()=>{
                         </div>
                         <div>
                             <h3 className='text-3xl font-bold'>Sign up</h3>
-                            <button className='btn flex w-full mt-6 py-2 items-center justify-center text-md rounded font-semibold'>
+                            <button onClick={handleGoogleLogin} className='btn flex w-full mt-6 py-2 items-center justify-center text-md rounded font-semibold'>
                                 <FcGoogle className='pr-1 text-2xl' />
                                 <p>Continue with Google</p>
                             </button>

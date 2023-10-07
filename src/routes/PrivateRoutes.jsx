@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import auth from "../firebase/firebase.config";
 import { setUser, toggleLoading } from "../redux/features/user/userSlice";
+import Loading from "../components/Loading";
 
 const PrivateRoutes=({children})=>{
     const userInfo = useSelector(state=> state.userSlice);
@@ -26,7 +27,7 @@ const PrivateRoutes=({children})=>{
     
     
     if(userInfo.isLoading){
-        return <div>Loading</div>
+        return <Loading></Loading>
     }
     if(!userInfo.email && !userInfo.isLoading){
         // return <Navigate to="/login"></Navigate>

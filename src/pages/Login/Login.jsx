@@ -4,7 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm} from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux';
-import { loginWithEmailPass } from '../../redux/features/user/userSlice';
+import { googleLogin, loginWithEmailPass } from '../../redux/features/user/userSlice';
 import { useEffect } from 'react';
 
 
@@ -21,6 +21,11 @@ const Login=()=>{
         console.log("data from login page", data);
         dispatch(loginWithEmailPass({email:data.email, password:data.password}))
     };
+
+    const handleGoogleLogin=()=>{
+        console.log("Clicked Google Login");
+        dispatch(googleLogin());
+    }
 
     useEffect(()=>{
         if(!isLoading && email){
@@ -45,7 +50,7 @@ const Login=()=>{
                         </div>
                         <div>
                             <h3 className='text-3xl font-bold'>Login</h3>
-                            <button className='btn flex w-full mt-6 py-2 items-center justify-center text-md rounded font-semibold'>
+                            <button onClick={handleGoogleLogin} className='btn flex w-full mt-6 py-2 items-center justify-center text-md rounded font-semibold'>
                                 <FcGoogle className='pr-1 text-2xl' />
                                 <p>Continue with Google</p>
                             </button>

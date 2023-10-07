@@ -10,11 +10,21 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { AiFillDelete } from "react-icons/ai";
 import { RiPsychotherapyFill } from "react-icons/ri";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import AddTaskModal from '../components/AddTaskModal';
+import { useState } from 'react';
 
 const  MainLayout=()=>{
+    const [isOpen, setIsOpen] = useState(false);
+    
+      function openModal() {
+        setIsOpen(true)
+      }
+
+
     return(
         <div className="max-w-screen-2xl">
             <Navbar></Navbar>
+            <AddTaskModal isOpen={isOpen} setIsOpen={setIsOpen}></AddTaskModal>
             <div>
                 <div className="drawer lg:drawer-open">
                     <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -29,7 +39,10 @@ const  MainLayout=()=>{
                         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
                         <ul className="sideMenu menu p-4 w-80 min-h-full bg-base-200 text-base-content">
                         {/* Sidebar content here */}
-                        <li className="text-xl"><a><span className="text-green-500"><AiOutlinePlus/></span>New Task</a></li>
+                        {/* <li className="text-xl"><a><span className="text-green-500"><AiOutlinePlus/></span>New Task</a></li> */}
+                        <div>
+                            <button onClick={openModal} className='w-full'><li className="text-xl"><a><span className="text-green-500"><AiOutlinePlus/></span>New Task</a></li></button>
+                        </div>
                         <div className="divider"></div> 
                         {/* <Link to="/allTasks"><li className="text-xl py-1"><a><span className="text-blue-500"><BsListTask/></span>All Tasks</a></li></Link> */}
                         <NavLink
