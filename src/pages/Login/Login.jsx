@@ -6,6 +6,7 @@ import { useForm} from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux';
 import { googleLogin, loginWithEmailPass } from '../../redux/features/user/userSlice';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2'
 
 
 const Login=()=>{
@@ -20,11 +21,25 @@ const Login=()=>{
     const onSubmit = (data) => {
         console.log("data from login page", data);
         dispatch(loginWithEmailPass({email:data.email, password:data.password}))
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User login successfully',
+            showConfirmButton: false,
+            timer: 1500
+        }) 
     };
 
     const handleGoogleLogin=()=>{
         console.log("Clicked Google Login");
         dispatch(googleLogin());
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User login successfully',
+            showConfirmButton: false,
+            timer: 1500
+        }) 
     }
 
     useEffect(()=>{

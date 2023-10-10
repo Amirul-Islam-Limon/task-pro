@@ -6,6 +6,8 @@ import { useForm, useWatch } from "react-hook-form"
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser, googleLogin } from '../../redux/features/user/userSlice';
+import { useAddUserMutation } from '../../redux/features/user/userApi';
+import Swal from 'sweetalert2'
 
 const SignUp=()=>{
     const {register, handleSubmit, control, formState: { errors },} = useForm()
@@ -15,17 +17,35 @@ const SignUp=()=>{
     const dispatch = useDispatch();
     const userInfo = useSelector(state=> state.userSlice);
     const navigate = useNavigate();
+    const [addUser, {data:userUpdatedData, error}] = useAddUserMutation()
 
     console.log("from Sign Up page", userInfo);
+    console.log("userUpdatedData", userUpdatedData);
+    
 
     const onSubmit = (data) => {
+        const submitedUser = {displayName:data.name, email:data.email}
+        addUser(submitedUser);
         dispatch(createUser({email:data.email, password:data.password, name:data.name}));
-        console.log(data)
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User created successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })     
     };
 
     const handleGoogleLogin=()=>{
         console.log("Clicked Google Login");
         dispatch(googleLogin());
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User created successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
     }
 
 

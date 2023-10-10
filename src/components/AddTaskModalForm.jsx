@@ -3,18 +3,20 @@ import { Link} from 'react-router-dom';
 import { useForm} from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../redux/features/user/userSlice';
+import { useGetUserQuery } from '../redux/features/user/userApi';
 // import { createUser } from '../../redux/features/user/userSlice';
 
 const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
-    const {register, handleSubmit, formState: { errors },} = useForm()
-    const dispatch = useDispatch();
-    const userInfo = useSelector(state=> state.userSlice);
-
-    console.log("from Sign Up page", userInfo);
+    const {register, handleSubmit, formState: { errors },} = useForm();
+    const {data:user, isLoading} = useGetUserQuery(undefined, {
+        pollingInterval:30000,
+        refetchOnMountOrArgChange:true
+    })
+    console.log(user);
 
     const onSubmit = (data) => {
-        dispatch(createUser({email:data.email, password:data.password, name:data.name}));
-        console.log(data)
+        console.log(data);
+        setIsOpen(!isOpen)
     };
 
     return(
@@ -28,36 +30,58 @@ const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Full Name</span>
+                                    <span className="label-text">Task Title</span>
                                 </label>
-                                <input type="text" placeholder="your name" {...register("name", { required: true })} className="input input-bordered"/>
-                                {errors.name && <span className='text-red-500'>This field is required</span>}
+                                <input type="text" placeholder="type task title" {...register("taskTitle", { required: true })} className="input input-bordered"/>
+                                {errors.taskTitle && <span className='text-red-500'>This field is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Email</span>
+                                    <span className="label-text">Category</span>
                                 </label>
-                                <input type="email" placeholder="email address" {...register("email", { required: true })} className="input input-bordered"/>
-                                {errors.email && <span className='text-red-500'>This field is required</span>}
+                                <select {...register("category", { required:true})} className="input input-bordered">
+                                    <option disabled selected value="">Select a Cetegory</option>
+                                    <option value="frontEnd">Front End</option>
+                                    <option value="backEnd">Back End</option>
+                                    <option value="server">Server</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                {errors.category && <span className='text-red-500'>This field is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Password</span>
+                                    <span className="label-text">Due Date</span>
                                 </label>
-                                <input type="password" placeholder="type your password" {...register("password", { required:true, pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/i })} className="input input-bordered"/>
-                                {errors.password && <span className='text-red-500'>password must be atleast 6 character with one number and one special character</span>}
+                                <input type="date" placeholder="select your date" {...register("dueDate", { required:true})} className="input input-bordered"/>
+                                {errors.dueDate && <span className='text-red-500'>This field is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Confirm Password</span>
+                                    <span className="label-text">Priority Level</span>
                                 </label>
-                                <input type="password" placeholder="password(confirm)" {...register("confirmPassword", { required: true })} className="input input-bordered"/>
-                                {errors.confirmPassword && <span className='text-red-500'>This field is required</span>}
+                                <select {...register("priority", { required:true})} className="input input-bordered">
+                                    <option disabled selected value="">Select a Priority Level</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                                {errors.priority && <span className='text-red-500'>This field is required</span>}
                             </div>
-                            {/* <button className='btn disabled:cursor-not-allowed w-full bg-red-600 mt-7 text-white rounded py-3 font-semibold hover:bg-red-600' type="submit" value="Sign up with email">Sign up with email</button> */}
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Assign to</span>
+                                </label>
+                                <select {...register("assignTo", { required:true})} className="input input-bordered">
+                                    <option disabled selected value="0">Select an Assignee</option>
+                                    <option value="high">Amirul Islam</option>
+                                    <option value="medium">Mehedi Hasan</option>
+                                    <option value="low">Riad Hossain</option>
+                                </select>
+                                {errors.assignTo && <span className='text-red-500'>This field is required</span>}
+                            </div>
                         </form>
                         <div className='mt-5'>
-                            <button className='rounded-right w-1/2 bg-red-600 text-white py-3 text-md font-semibold'>Create</button>
+                            <button onClick={handleSubmit(onSubmit)} className='rounded-right w-1/2 bg-red-600 text-white py-3 text-md font-semibold'>Create</button>
                             <button onClick={closeModal} className='w-1/2 bg-black text-white py-3 text-md font-semibold'>Close</button>
                         </div>
                     </div>
