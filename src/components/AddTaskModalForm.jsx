@@ -4,19 +4,23 @@ import { useForm} from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../redux/features/user/userSlice';
 import { useGetUserQuery } from '../redux/features/user/userApi';
+import { useAddTaskMutation } from '../redux/features/tasks/tasksApi';
 // import { createUser } from '../../redux/features/user/userSlice';
 
 const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
     const {register, handleSubmit, formState: { errors },} = useForm();
-    const {data:user, isLoading} = useGetUserQuery(undefined, {
+    const [addTask, {data, error}] = useAddTaskMutation();
+    const {data:users, isLoading} = useGetUserQuery(undefined, {
         pollingInterval:30000,
         refetchOnMountOrArgChange:true
     })
-    console.log(user);
+
+    console.log(users);
 
     const onSubmit = (data) => {
-        console.log(data);
-        setIsOpen(!isOpen)
+        const selectedInfo = {...data, status:"pending"}
+        addTask(selectedInfo);
+        setIsOpen(!isOpen);
     };
 
     return(
@@ -72,10 +76,13 @@ const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
                                     <span className="label-text">Assign to</span>
                                 </label>
                                 <select {...register("assignTo", { required:true})} className="input input-bordered">
-                                    <option disabled selected value="0">Select an Assignee</option>
-                                    <option value="high">Amirul Islam</option>
-                                    <option value="medium">Mehedi Hasan</option>
-                                    <option value="low">Riad Hossain</option>
+                                    <option disabled selected value="">Select an Assignee</option>
+                                    {
+                                        users?.map(user=><option
+                                        key={user._id}
+                                        value={user.displayName}
+                                        >{user.displayName}</option>)
+                                    }
                                 </select>
                                 {errors.assignTo && <span className='text-red-500'>This field is required</span>}
                             </div>
