@@ -9,6 +9,8 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import PrivateRoutes from "./PrivateRoutes";
+import TaskDetails from "../pages/TaskDetails/TaskDetails";
+
 
 const routes = createBrowserRouter([
     {
@@ -46,6 +48,13 @@ const routes = createBrowserRouter([
             {
                 path:"low-priority",
                 element:<LowPriorityTask></LowPriorityTask>
+            },
+            {
+                path:"taskDetails/:id",
+                loader:(props)=>{
+                    return fetch(`http://localhost:5000/task/${props.params.id}`);
+                },
+                element:<TaskDetails></TaskDetails>
             }
         ]
     },

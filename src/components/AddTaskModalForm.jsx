@@ -5,22 +5,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../redux/features/user/userSlice';
 import { useGetUserQuery } from '../redux/features/user/userApi';
 import { useAddTaskMutation } from '../redux/features/tasks/tasksApi';
+import Swal from 'sweetalert2'
 // import { createUser } from '../../redux/features/user/userSlice';
 
 const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [addTask, {data, error}] = useAddTaskMutation();
+    const currentUser = useSelector(state=> state.userSlice);
     const {data:users, isLoading} = useGetUserQuery(undefined, {
         pollingInterval:30000,
         refetchOnMountOrArgChange:true
     })
 
-    console.log(users);
+    console.log("currentUser", currentUser);
 
     const onSubmit = (data) => {
-        const selectedInfo = {...data, status:"pending"}
+        const selectedInfo = {...data, createdBy:{name:currentUser.displayName,email:currentUser.email}, status:"pending"}
         addTask(selectedInfo);
         setIsOpen(!isOpen);
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your Task Added Successfuly',
+            showConfirmButton: false,
+            timer: 1500
+          })
     };
 
     return(
