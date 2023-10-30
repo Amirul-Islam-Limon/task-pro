@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { googleLogin, loginWithEmailPass } from '../../redux/features/user/userSlice';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2'
+import { useAddUserMutation } from '../../redux/features/user/userApi';
 
 
 const Login=()=>{
     const {register, handleSubmit, formState: { errors },} = useForm();
     const dispatch = useDispatch();
     const {email, isLoading} = useSelector(state=> state.userSlice);
+    const [addUser, {data:userUpdatedData, error}] = useAddUserMutation();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -20,26 +22,21 @@ const Login=()=>{
 
     const onSubmit = (data) => {
         console.log("data from login page", data);
-        dispatch(loginWithEmailPass({email:data.email, password:data.password}))
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'User login successfully',
-            showConfirmButton: false,
-            timer: 1500
-        }) 
+        dispatch(loginWithEmailPass({email:data.email, password:data.password})) 
     };
 
-    const handleGoogleLogin=()=>{
-        console.log("Clicked Google Login");
-        dispatch(googleLogin());
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'User login successfully',
-            showConfirmButton: false,
-            timer: 1500
-        }) 
+    const handleGoogleLogin= async()=>{       
+        try {
+            const response = await dispatch(googleLogin())
+            if (error) {
+                console.error("Error handleGoogleLogin:", error);
+              } else {
+                const userInfo = {displayName:response.payload.name, email:response.payload.email};
+                addUser(userInfo);
+              }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
     }
 
     useEffect(()=>{

@@ -18,7 +18,7 @@ const AddTaskModalForm=({isOpen, setIsOpen, closeModal})=>{
     })
 
     console.log("currentUser", currentUser);
-
+    
     const onSubmit = (data) => {
         const selectedInfo = {...data, createdBy:{name:currentUser.displayName,email:currentUser.email}, status:"pending"}
         addTask(selectedInfo);

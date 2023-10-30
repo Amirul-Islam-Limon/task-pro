@@ -8,12 +8,15 @@ const userApi = baseApi.injectEndpoints({
                 url:"/user",
                 method:"POST",
                 body:userInfo
-            })
+            }),
+            invalidatesTags:["Users"]
+
         }),
         getUser:builder.query({
             query:()=>({
                 url:"/user",
-            })
+            }),
+            providesTags:["Users"]
         })
     }) 
 })

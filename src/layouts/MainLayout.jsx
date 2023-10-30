@@ -73,10 +73,10 @@ const  MainLayout=()=>{
                            : ''
                         }
                          >
-                        <li className="text-xl py-1 text-red-600"><a><span className="text-red-600"><BsListTask/></span>High Priority</a></li>
+                        <li className="text-xl py-1 text-red-600"><a><span className="text-red-600"><SlCalender/></span>High Priority</a></li>
                         </NavLink>  
                         <NavLink
-                         to="medium-priority"
+                         to="mediumPriority"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'
@@ -86,7 +86,7 @@ const  MainLayout=()=>{
                         <li className="text-xl py-1 text-yellow-500"><a><span className="text-yellow-500"><SlCalender/></span>Medium Priority</a></li>
                         </NavLink> 
                         <NavLink
-                         to="low-priority"
+                         to="lowPriority"
                          className={({ isActive }) =>
                          isActive
                            ? 'bg-white cursor-pointer'

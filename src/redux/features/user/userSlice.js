@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import auth from "../../../firebase/firebase.config";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-
+import Swal from 'sweetalert2'
 
 const initialState = {
     displayName:"",
@@ -17,7 +17,16 @@ export const createUser = createAsyncThunk("userSlice/createUser", async({email,
     await updateProfile(auth.currentUser,{
         displayName:name
     })
-    console.log(data);
+    if(data.user.email){
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User created successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+    
     return{
         name:data.user.displayName,
         email:data.user.email
@@ -28,6 +37,15 @@ export const createUser = createAsyncThunk("userSlice/createUser", async({email,
 export const loginWithEmailPass = createAsyncThunk("userSlice/loginWithEmailPass", async({email, password})=>{
     const data = await signInWithEmailAndPassword(auth, email, password);
     console.log(data);
+    if(data.user.email){
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User loggedin successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
     return{
         name:data.user.displayName,
         email:data.user.email
@@ -39,6 +57,15 @@ export const googleLogin = createAsyncThunk("userSlice/GoogleLogin", async()=>{
     const googleProvider = new GoogleAuthProvider();
     const data = await signInWithPopup(auth, googleProvider);
     console.log(data);
+    if(data.user.email){
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User login successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
     return{
         name:data.user.displayName,
         email:data.user.email

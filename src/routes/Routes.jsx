@@ -36,22 +36,54 @@ const routes = createBrowserRouter([
                 path:"today",
                 element:<TodaysTask></TodaysTask>
             },
-            
+            {
+                path:"today/taskDetails/:id",
+                loader:(props)=>{
+                    // return fetch(`https://task-pro-eight.vercel.app/task/${props.params.id}`);
+                    return fetch(`http://localhost:5000/task/${props.params.id}`);
+                },
+                element:<TaskDetails></TaskDetails>
+            },            
             {
                 path:"highPriority",
                 element:<HighPriorityTask></HighPriorityTask>
             },
             {
-                path:"medium-priority",
+                path:"mediumPriority",
                 element:<MediumPriorityTask></MediumPriorityTask>
             },
             {
-                path:"low-priority",
+                path:"lowPriority",
                 element:<LowPriorityTask></LowPriorityTask>
+            },
+            {
+                path:"highPriority/taskDetails/:id",
+                loader:(props)=>{
+                    // return fetch(`https://task-pro-eight.vercel.app/task/${props.params.id}`);
+                    return fetch(`http://localhost:5000/task/${props.params.id}`);
+                },
+                element:<TaskDetails></TaskDetails>
+            },
+            {
+                path:"mediumPriority/taskDetails/:id",
+                loader:(props)=>{
+                    // return fetch(`https://task-pro-eight.vercel.app/task/${props.params.id}`);
+                    return fetch(`http://localhost:5000/task/${props.params.id}`);
+                },
+                element:<TaskDetails></TaskDetails>
+            },
+            {
+                path:"lowPriority/taskDetails/:id",
+                loader:(props)=>{
+                    // return fetch(`https://task-pro-eight.vercel.app/task/${props.params.id}`);
+                    return fetch(`http://localhost:5000/task/${props.params.id}`);
+                },
+                element:<TaskDetails></TaskDetails>
             },
             {
                 path:"taskDetails/:id",
                 loader:(props)=>{
+                    // return fetch(`https://task-pro-eight.vercel.app/task/${props.params.id}`);
                     return fetch(`http://localhost:5000/task/${props.params.id}`);
                 },
                 element:<TaskDetails></TaskDetails>

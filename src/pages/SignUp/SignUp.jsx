@@ -26,26 +26,22 @@ const SignUp=()=>{
     const onSubmit = (data) => {
         const submitedUser = {displayName:data.name, email:data.email}
         addUser(submitedUser);
-        dispatch(createUser({email:data.email, password:data.password, name:data.name}));
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'User created successfully',
-            showConfirmButton: false,
-            timer: 1500
-        })     
+        dispatch(createUser({email:data.email, password:data.password, name:data.name}));     
     };
 
-    const handleGoogleLogin=()=>{
-        console.log("Clicked Google Login");
-        dispatch(googleLogin());
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'User created successfully',
-            showConfirmButton: false,
-            timer: 1500
-        })
+
+    const handleGoogleLogin= async()=>{       
+        try {
+            const response = await dispatch(googleLogin())
+            if (error) {
+                console.error("Error handleGoogleLogin:", error);
+              } else {
+                const userInfo = {displayName:response.payload.name, email:response.payload.email};
+                addUser(userInfo);
+              }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
     }
 
 
